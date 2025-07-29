@@ -1,0 +1,26 @@
+# Vaultify Configuration File
+# This file contains default configuration values
+# Environment variables will override these settings
+
+server:
+  grpc_port: 8080
+  http_port: 8081
+  host: "0.0.0.0"
+  base_url: "http://localhost:8081"
+  # tls_cert_file: ""  # Path to TLS certificate
+  # tls_key_file: ""   # Path to TLS private key
+
+redis:
+  address: "localhost:6379"
+  password: ""  # Leave empty for no password
+  db: 0
+
+audit:
+  log_file: "./audit.log"
+  secret_key: "dev-audit-key-change-in-production"  # CHANGE IN PRODUCTION
+
+crypto:
+  default_ttl: "24h"      # Default time-to-live for secrets
+  max_ttl: "168h"         # Maximum allowed TTL (7 days)
+  default_max_reads: 1    # Default maximum reads
+  max_max_reads: 1000     # Maximum allowed reads

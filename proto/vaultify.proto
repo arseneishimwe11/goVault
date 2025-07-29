@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+package vaultify.v1;
+
+option go_package = "github.com/vaultify/vaultify/pkg/pb";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+// VaultifyService provides secure secret storage and retrieval
+service VaultifyService {
+  // StoreSecret stores an encrypted secret with metadata
+  rpc StoreSecret(StoreSecretRequest) returns (StoreSecretResponse) {
+    option (google.api.http) = {
+      post: "/v1/secrets"
+      body: "*"
+    };
+  }
+
+  // RetrieveSecret retrieves and deletes a secret by token
+  rpc RetrieveSecret(RetrieveSecretRequest) returns (RetrieveSecretResponse) {
+    option (google.api.http) = {
+      get: "/v1/secrets/{token}"
+    };
+  }
+
+  // GetSecretMetadata gets metadata about a secret without retrieving it
+  rpc GetSecretMetadata(GetSecretMetadataRequest) returns (GetSecretMetadataResponse) {
+    option (google.api.http) = {
+      get: "/v1/secrets/{token}/metadata"
+    };
+  }
+
+  // GetAuditLogs retrieves audit logs for verification
+  rpc GetAuditLogs(GetAuditLogsRequest) returns (GetAuditLogsResponse) {
+    option (google.api.http) = {
+      get: "/v1/audit/logs"
+    };
+  }
+}
+
+// Request to store a secret
+message StoreSecretRequest {
+  string encrypted_data = 1;      // Base64 encoded encrypted secret
+  string encryption_key_hash = 2; // Hash of the encryption key for verification
+  int64 ttl_seconds = 3;          // Time to live in seconds
+  int32 max_reads = 4;            // Maximum number of reads (0 = unlimited)
+  map<string, string> metadata = 5; // Additional metadata
+  string client_info = 6;         // Client information for audit
+}
+
+// Response with token to retrieve secret
+message StoreSecretResponse {
+  string token = 1;               // Unique token to retrieve the secret
+  google.protobuf.Timestamp expires_at = 2; // When the secret expires
+  string share_url = 3;           // Optional shareable URL
+}
+
+// Request to retrieve a secret
+message RetrieveSecretRequest {
+  string token = 1;               // Token from StoreSecretResponse
+  string client_info = 2;         // Client information for audit
+}
+
+// Response with the encrypted secret
+message RetrieveSecretResponse {
+  string encrypted_data = 1;      // Base64 encoded encrypted secret
+  map<string, string> metadata = 2; // Secret metadata
+  int32 reads_remaining = 3;      // Reads remaining (if limited)
+  google.protobuf.Timestamp created_at = 4; // When secret was created
+}
+
+// Request to get secret metadata
+message GetSecretMetadataRequest {
+  string token = 1;               // Token from StoreSecretResponse
+}
+
+// Response with secret metadata
+message GetSecretMetadataResponse {
+  bool exists = 1;                // Whether the secret exists
+  map<string, string> metadata = 2; // Secret metadata
+  int32 reads_remaining = 3;      // Reads remaining (if limited)
+  google.protobuf.Timestamp created_at = 4; // When secret was created
+  google.protobuf.Timestamp expires_at = 5; // When the secret expires
+}
+
+// Request to get audit logs
+message GetAuditLogsRequest {
+  string token = 1;               // Optional: filter by token
+  google.protobuf.Timestamp from = 2; // Optional: from timestamp
+  google.protobuf.Timestamp to = 3;   // Optional: to timestamp
+  int32 limit = 4;                // Limit number of results
+}
+
+// Response with audit logs
+message GetAuditLogsResponse {
+  repeated AuditLogEntry logs = 1;
+  string verification_hash = 2;   // Hash for tamper verification
+}
+
+// Single audit log entry
+message AuditLogEntry {
+  string id = 1;                  // Unique log entry ID
+  string token = 2;               // Secret token
+  string action = 3;              // Action: STORE, RETRIEVE, DELETE, etc.
+  string client_info = 4;         // Client information
+  bool success = 5;               // Whether the action succeeded
+  string error_message = 6;       // Error message if failed
+  google.protobuf.Timestamp timestamp = 7; // When the action occurred
+  string previous_hash = 8;       // Hash of previous log entry (for chaining)
+  string entry_hash = 9;          // Hash of this entry
+}
+
+// Error details for failed operations
+message ErrorDetails {
+  string code = 1;                // Error code
+  string message = 2;             // Human readable message
+  map<string, string> details = 3; // Additional error details
+}
