@@ -1,4 +1,4 @@
-# 🔐 Vaultify
+# 🔐 GoVault Tool
 
 **Secure, Encrypted Secret-Sharing CLI + API**
 
@@ -22,8 +22,8 @@ Vaultify is a high-quality, security-focused tool that allows users and teams to
 
 ```bash
 # Clone the repository
-git clone https://github.com/vaultify/vaultify.git
-cd vaultify
+git clone https://github.com/arseneishimwe11/goVault
+cd goVault
 
 # Start the services
 docker-compose up -d
