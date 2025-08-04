@@ -10,6 +10,8 @@ import (
 
 var version = "1.0.0"
 
+// main function serves as the entry point for the Vaultify CLI application.
+// It initializes the root command and executes it, handling any errors that may occur.
 func main() {
 	if err := newRootCmd().Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
