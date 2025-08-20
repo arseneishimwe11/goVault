@@ -42,5 +42,6 @@ and tamper-proof guarantees.`,
 	cmd.AddCommand(cli.NewHealthCmd())
 	cmd.AddCommand(cli.NewVersionCmd(version))
 
+	// Return the root command
 	return cmd
 }
