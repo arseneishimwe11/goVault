@@ -126,9 +126,16 @@ func runSend(cmd *cobra.Command, args []string, ttlStr string, maxReads int32, p
 		return fmt.Errorf("failed to encrypt secret: %w", err)
 	}
 
+	// Serialize encryptedData to JSON string
+	encryptedDataBytes, err := json.Marshal(encryptedData)
+	if err != nil {
+		return fmt.Errorf("failed to marshal encrypted data: %w", err)
+	}
+	encryptedDataStr := string(encryptedDataBytes)
+
 	// Create request (currently unused, placeholder for future implementation)
 	_ = &types.StoreSecretRequest{
-		Secret:   encryptedData,
+		Secret:   encryptedDataStr,
 		Password: password,
 		TTL:      ttl,
 		MaxReads: maxReads,
