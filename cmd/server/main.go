@@ -20,7 +20,7 @@ import (
 	"github.com/vaultify/vaultify/internal/config"
 	"github.com/vaultify/vaultify/internal/crypto"
 	"github.com/vaultify/vaultify/internal/storage"
-	"github.com/vaultify/vaultify/pkg/types"
+	// "github.com/vaultify/vaultify/pkg/types"
 )
 
 func main() {
