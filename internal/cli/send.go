@@ -126,8 +126,8 @@ func runSend(cmd *cobra.Command, args []string, ttlStr string, maxReads int32, p
 		return fmt.Errorf("failed to encrypt secret: %w", err)
 	}
 
-	// Create request
-	request := &types.StoreSecretRequest{
+	// Create request (currently unused, placeholder for future implementation)
+	_ = &types.StoreSecretRequest{
 		Secret:   encryptedData,
 		Password: password,
 		TTL:      ttl,
