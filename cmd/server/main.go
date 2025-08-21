@@ -76,6 +76,7 @@ func startGRPCServer(port int, server *grpc.Server) {
 		log.Fatalf("Failed to listen on port %d: %v", port, err)
 	}
 
+	// Register the Vaultify server
 	log.Printf("Starting gRPC server on port %d", port)
 	if err := server.Serve(listener); err != nil {
 		log.Fatalf("Failed to serve gRPC: %v", err)
