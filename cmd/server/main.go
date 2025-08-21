@@ -200,6 +200,7 @@ func setupHTTPRoutes(router *mux.Router, vaultifyServer *api.VaultifyServer) {
 
 func startCleanupRoutine(storage *storage.RedisStorage) {
 	ticker := time.NewTicker(1 * time.Hour) // Run cleanup every hour
+	// 
 	defer ticker.Stop()
 
 	for {
