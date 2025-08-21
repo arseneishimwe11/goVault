@@ -128,7 +128,7 @@ func runSend(cmd *cobra.Command, args []string, ttlStr string, maxReads int32, p
 
 	// Create request
 	request := &types.StoreSecretRequest{
-		Secret:   secret,
+		Secret:   encryptedData,
 		Password: password,
 		TTL:      ttl,
 		MaxReads: maxReads,
