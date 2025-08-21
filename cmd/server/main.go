@@ -200,7 +200,6 @@ func setupHTTPRoutes(router *mux.Router, vaultifyServer *api.VaultifyServer) {
 
 func startCleanupRoutine(storage *storage.RedisStorage) {
 	ticker := time.NewTicker(1 * time.Hour) // Run cleanup every hour
-	// 
 	defer ticker.Stop()
 
 	for {
@@ -216,6 +215,7 @@ func startCleanupRoutine(storage *storage.RedisStorage) {
 }
 
 func waitForShutdown(grpcServer *grpc.Server) {
+	// Wait for interrupt signal
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
