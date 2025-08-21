@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"log"
+	//d"log"
 	"time"
 
 	"github.com/vaultify/vaultify/internal/audit"
