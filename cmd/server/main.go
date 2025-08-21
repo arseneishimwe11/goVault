@@ -102,6 +102,7 @@ func setupHTTPRoutes(router *mux.Router, vaultifyServer *api.VaultifyServer) {
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
 
+		// Call the health check method
 		health, err := vaultifyServer.HealthCheck(ctx)
 		if err != nil {
 			http.Error(w, "Health check failed", http.StatusInternalServerError)
