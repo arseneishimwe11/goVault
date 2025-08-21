@@ -109,6 +109,7 @@ func setupHTTPRoutes(router *mux.Router, vaultifyServer *api.VaultifyServer) {
 			return
 		}
 
+		// Set response headers
 		w.Header().Set("Content-Type", "application/json")
 		if health.Status != "healthy" {
 			w.WriteHeader(http.StatusServiceUnavailable)
