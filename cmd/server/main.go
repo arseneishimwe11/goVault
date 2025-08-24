@@ -202,15 +202,12 @@ func startCleanupRoutine(storage *storage.RedisStorage) {
 	ticker := time.NewTicker(1 * time.Hour) // Run cleanup every hour
 	defer ticker.Stop()
 
-	for {
-		select {
-		case <-ticker.C:
-			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
-			if err := storage.Cleanup(ctx); err != nil {
-				log.Printf("Cleanup error: %v", err)
-			}
-			cancel()
+	for range ticker.C {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+		if err := storage.Cleanup(ctx); err != nil {
+			log.Printf("Cleanup error: %v", err)
 		}
+		cancel()
 	}
 }
 
