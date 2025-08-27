@@ -75,7 +75,7 @@ func (s *VaultifyServer) StoreSecret(ctx context.Context, req *types.StoreSecret
 			return nil, fmt.Errorf("key generation failed: %w", err)
 		}
 		
-		// Handling failed encryption
+		// Handling failed encryptions
 		encData, err := s.crypto.EncryptWithKey(req.Secret, key)
 		if err != nil {
 			s.audit.LogAction(token, types.ActionStore, clientInfo, false, "encryption failed")
