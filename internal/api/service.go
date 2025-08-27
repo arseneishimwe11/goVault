@@ -137,6 +137,7 @@ func (s *VaultifyServer) RetrieveSecret(ctx context.Context, req *types.Retrieve
 	// Atomically read and update the secret
 	secret, err := s.storage.AtomicReadAndUpdate(ctx, req.Token)
 	if err != nil {
+		// Error message
 		var errorMsg string
 		switch err.(type) {
 		case *storage.SecretNotFoundError:
